@@ -98,27 +98,69 @@ class WishController extends Controller
         $wishes = Wish::where('id_student',$id)->get();
 
         $studentInfo = students::find($id);
-        $profile[]= null;
-        $i = 0;
-        foreach ($wishes as $wish){
 
-            $profile[$i]=$wish;
-            $i++;
-        }
+        $townArr=$wishes->pluck('id_town');
+
+        $arr1=$wishes->pluck('profile_1');
+        $arr2=$wishes->pluck('profile_2');
+        $arr3=$wishes->pluck('profile_3');
+        $arr4=$wishes->pluck('profile_4');
+        $arr5=$wishes->pluck('profile_5');
+        $arr6=$wishes->pluck('profile_6');
+        $arr7=$wishes->pluck('profile_7');
+        $arr8=$wishes->pluck('profile_8');
+        $arr9=$wishes->pluck('profile_9');
+        $arr10=$wishes->pluck('profile_10');
+        $arr11=$wishes->pluck('profile_11');
+        $arr12=$wishes->pluck('profile_12');
+
+
+            $profile[]=null;
+            for($i=0;$i<count($wishes);$i++) {
+            $town[$i] = Town::find($townArr[$i]);
+            $profile1[$i] = Profile::find($arr1[$i]);
+            $profile2[$i] = Profile::find($arr2[$i]);
+            $profile3[$i] = Profile::find($arr3[$i]);
+            $profile4[$i] = Profile::find($arr4[$i]);
+            $profile5[$i] = Profile::find($arr5[$i]);
+            $profile6[$i] = Profile::find($arr6[$i]);
+            $profile7[$i] = Profile::find($arr7[$i]);
+            $profile8[$i] = Profile::find($arr8[$i]);
+            $profile9[$i] = Profile::find($arr9[$i]);
+            $profile10[$i] = Profile::find($arr10[$i]);
+            $profile11[$i] = Profile::find($arr11[$i]);
+            $profile12[$i] = Profile::find($arr12[$i]);
+    
+            }
 
 
 
-        $profil_2 = $profile[0]->profile_2;
-        $profile_1=Profile::find($profil_2);
+
+//        foreach ($wishes as $wish) {
+//            $arr = $wish;
+//        }
+
+
 
 
 
 
         return view('general.general')
-            ->with('profile_1',$profile_1)
+            ->with('town',$town)
+            ->with('profile1',$profile1)
+            ->with('profile2',$profile2)
+            ->with('profile3',$profile3)
+            ->with('profile4',$profile4)
+            ->with('profile5',$profile5)
+            ->with('profile6',$profile6)
+            ->with('profile7',$profile7)
+            ->with('profile8',$profile8)
+            ->with('profile9',$profile9)
+            ->with('profile10',$profile10)
+            ->with('profile11',$profile11)
+            ->with('profile12',$profile12)
             ->with('wishes',$wishes)
-            ->with('studentInfo',$studentInfo)
-            ->with('profile',$profile);
+            ->with('studentInfo',$studentInfo);
     }
 
     /**
