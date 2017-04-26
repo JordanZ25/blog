@@ -22,7 +22,6 @@ Route::get('/admin','AdminController@admin');
 
 
 
-Route::resource('posts','PostsController');
 
 Route::resource('login','LoginController');
 Route::resource('wishes','WishController');
