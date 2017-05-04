@@ -44,7 +44,7 @@ class LoginSchoolsController extends Controller
 
         ));
 
-        $schools = DB::table('schools')
+        $schools = DB::table('sendSchools')
             ->where('id',$request->id)
             ->where('name',$request->name)
             ->where('town',$request->town)

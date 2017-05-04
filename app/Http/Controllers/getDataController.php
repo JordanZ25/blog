@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
 use App\Profile;
 use App\Town;
 use Illuminate\Http\Request;
@@ -17,11 +18,11 @@ class getDataController extends Controller
 
 
         $val = $request->input('id');
-        Session::put('id_town',$val);
+        Session::put('id_area',$val);
 
 
         $check = DB::table('Wish')
-            ->where('id_town',$val)
+            ->where('id_area',$val)
             ->where('id_student',Session::get('id'));
 
 
@@ -32,15 +33,15 @@ class getDataController extends Controller
         }else {
 
 
-            $town = Town::find($val);
-            $profiles = Profile::where('id_town', $town['id'])->get();
+            $area = Area::find($val);
+            $towns = Town::where('area_id', $area['id'])->get();
 
 
             $chek = Session::get('id');
             if ($chek != 0) {
                 return view('wishes/getData')
-                    ->with('town', $town)
-                    ->with('profiles', $profiles);
+                    ->with('area', $area)
+                    ->with('towns', $towns);
             } else {
                 return 'error';
             }

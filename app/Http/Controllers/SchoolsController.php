@@ -58,11 +58,13 @@ class SchoolsController extends Controller
         ));
 
         $student = new students();
-
+        
         $student->fullName = $request->fullName;
         $student->EGN = $request->EGN;
         $student->town = $request->town;
 
+        $statement = "ALTER TABLE students AUTO_INCREMENT = 111111;";
+        DB::unprepared($statement);
 
         $student->save();
 
@@ -73,6 +75,11 @@ class SchoolsController extends Controller
 
         
         
+    }
+    public function up()
+    {
+        $statement = "ALTER TABLE students AUTO_INCREMENT = 111111;";
+        DB::unprepared($statement);
     }
 
     /**

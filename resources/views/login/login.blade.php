@@ -19,8 +19,6 @@
 {{Form::label('id','ID:')}}
 {{Form::number('id',null )}}
 
-{{Form::label('name','Name:')}}
-{{Form::text('fullName',null)}}
 
 {{Form::label('egn','EGN:')}}
 {{Form::text('EGN',null)}}

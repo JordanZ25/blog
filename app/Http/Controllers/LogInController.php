@@ -39,14 +39,12 @@ class LogInController extends Controller
     {
         $this->validate($request,array(
             'id'=>'required|max:255',
-            'fullName'=> 'required',
             'EGN'=>'required|max:10'
 
         ));
 
         $users = DB::table('students')
             ->where('id',$request->id)
-            ->where('fullName',$request->fullName)
             ->where('EGN',$request->EGN);
 
         if($users->count()>0){

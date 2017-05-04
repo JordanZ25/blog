@@ -88,15 +88,15 @@
 
 
 
+<h1> Избери Област</h1>
 
 
 
-
-@foreach($towns as $town)
-
+@foreach($areas as $area)
 
 
-        <a href="/get?id={{$town->id}}" target="_blank">{{$town->town}}</a>
+
+        <a href="/get?id={{$area->id}}" target="_blank">{{$area->areaName}}</a>
 
 
 
@@ -112,7 +112,15 @@
 <div id="Profiles2">
 </div>
 
-<a href="{{$info->id}}">click</a>
+
+
+
+<br>
+<br>
+<br>
+
+
+<a href="{{$info->id}}">Submit</a>
 
 </body>
 </html>

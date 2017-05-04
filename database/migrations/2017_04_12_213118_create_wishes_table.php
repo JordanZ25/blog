@@ -15,8 +15,7 @@ class CreateWishesTable extends Migration
     {
         Schema::create('Wish', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_students');
-            $table->integer('id_town');
+            $table->integer('id_student');
             $table->integer('profile_1');
             $table->integer('profile_2');
             $table->integer('profile_3');

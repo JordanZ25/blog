@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Area;
 use App\grades;
 use App\Profile;
 use App\students;
@@ -37,7 +38,7 @@ class WishController extends Controller
 
         $studentsInfo =students::find($studentId);
         $gradesInfo = grades::where('id_student',$studentId)->get();
-        $towns = Town::all();
+        $areas = Area::all();
 
 
            $wishCheck = Wish::where('id_student',$studentId)->get();
@@ -45,7 +46,7 @@ class WishController extends Controller
 
         return view('wishes.wish')
             ->with('wishCheck',$wishCheck)
-            ->with('towns',$towns)
+            ->with('areas',$areas)
             ->with('info',$studentsInfo)
             ->with('grades',$gradesInfo);
     }
@@ -65,7 +66,7 @@ class WishController extends Controller
     $wish = new Wish();
 
     $wish->id_student = Session::get('id');
-    $wish->id_town = Session::get('id_town');
+    $wish->id_area = Session::get('id_area');
     $wish->profile_1 = $request->profile1;
     $wish->profile_2 = $request->profile2;
     $wish->profile_3 = $request->profile3;
@@ -99,7 +100,7 @@ class WishController extends Controller
 
         $studentInfo = students::find($id);
 
-        $townArr=$wishes->pluck('id_town');
+        $areaArr=$wishes->pluck('id_area');
 
         $arr1=$wishes->pluck('profile_1');
         $arr2=$wishes->pluck('profile_2');
@@ -117,7 +118,7 @@ class WishController extends Controller
 
             $profile[]=null;
             for($i=0;$i<count($wishes);$i++) {
-            $town[$i] = Town::find($townArr[$i]);
+            $area[$i] = Area::find($areaArr[$i]);
             $profile1[$i] = Profile::find($arr1[$i]);
             $profile2[$i] = Profile::find($arr2[$i]);
             $profile3[$i] = Profile::find($arr3[$i]);
@@ -135,6 +136,18 @@ class WishController extends Controller
 
 
 
+        for($i=0;$i<count($wishes);$i++) {
+            for($j=1;$j<=12;$j++) {
+                if(isset(${'profile'.$j}[$i]->id_town)) {
+                    ${'town' . $j}[$i] = Town::find( ${'profile' . $j}[$i]->id_town);
+                }else{
+                    ${'town' . $j}[$i] = 0;
+                }
+            }
+        }
+
+
+
 
 //        foreach ($wishes as $wish) {
 //            $arr = $wish;
@@ -146,7 +159,7 @@ class WishController extends Controller
 
 
         return view('general.general')
-            ->with('town',$town)
+            ->with('area',$area)
             ->with('profile1',$profile1)
             ->with('profile2',$profile2)
             ->with('profile3',$profile3)
@@ -159,6 +172,20 @@ class WishController extends Controller
             ->with('profile10',$profile10)
             ->with('profile11',$profile11)
             ->with('profile12',$profile12)
+
+            ->with('town1',$town1)
+            ->with('town2',$town2)
+            ->with('town3',$town3)
+            ->with('town4',$town4)
+            ->with('town5',$town5)
+            ->with('town6',$town6)
+            ->with('town7',$town7)
+            ->with('town8',$town8)
+            ->with('town9',$town9)
+            ->with('town10',$town10)
+            ->with('town11',$town11)
+            ->with('town12',$town12)
+
             ->with('wishes',$wishes)
             ->with('studentInfo',$studentInfo);
     }
@@ -169,9 +196,20 @@ class WishController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$val)
     {
-        //
+
+        $area = Area::find($val);
+        $towns = Town::where('area_id', $area['id'])->get();
+        $studentId = Session::get('id');
+        $wish= DB::table('Wish')
+            ->where('id_student',$studentId)
+            ->where('id_area',$val)->pluck('id');
+
+        return view('wishes.editWish')
+            ->with('wishId',$wish)
+            ->with('towns',$towns)
+            ->with('val',$id);
     }
 
     /**
@@ -183,7 +221,14 @@ class WishController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $val = $request->val;
+        $wish=Wish::find($id);
+        $wish -> {'profile_'.$val} = $request -> {'profile'.$val};
+        $wish ->save();
+        
+        return redirect()->route('wishes.show',$wish->id_student);
+
+
     }
 
     /**
@@ -192,8 +237,13 @@ class WishController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $val = $request->val;
+       $wish = Wish::find($id);
+        $idStudent = $wish -> id_student;
+        $wish['profile_'.$val]=0;
+        $wish->save();
+       return redirect()->route('wishes.show',$idStudent);
     }
 }

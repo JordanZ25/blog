@@ -14,12 +14,14 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id')->unsigned();
             $table->string('fullName');
             $table->string('EGN');
             $table->string('town');
 
+
         });
+        \Illuminate\Support\Facades\DB::update("ALTER TABLE students AUTO_INCREMENT = 1000;");
     }
 
     /**
