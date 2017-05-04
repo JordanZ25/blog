@@ -8,4 +8,6 @@ class students extends Model
 {
     protected $table = 'students';
     public $timestamps = false;
+
+    
 }
